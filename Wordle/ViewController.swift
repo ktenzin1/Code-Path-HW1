@@ -1,36 +1,117 @@
 //
-//  ViewController.swift
+
+//  KeyboardViewController.swift
+
 //  Wordle
+
 //
+
 //  Created by Mari Batilando on 2/12/23.
+
 //
+
+
 
 import UIKit
 
-class ViewController: UIViewController {
 
-  @IBOutlet weak var wordsCollectionView: UICollectionView!
-  @IBOutlet weak var keyboardCollectionView: UICollectionView!
 
-  private var boardController: BoardController!
-  private var keyboardController: KeyboardController!
+class KeyboardController: NSObject,
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+                          UICollectionViewDataSource,
 
-    setupNavigationBar()
+                          UICollectionViewDelegate,
 
-    boardController = BoardController(collectionView: wordsCollectionView)
-    keyboardController = KeyboardController(collectionView: keyboardCollectionView)
-    /*
-      Exercise 3: Assign a closure to the `didSelectString` property of `keyboardController` (see KeyboardController.swift):
-      
-      This closure takes in a string (the string selected from the keyboard).
-      If the string is equal to the `DELETE_KEY` constant (see Constants.swift), then call the `deleteLastCharacter` method of `boardController`.
-      Else, it should use the `enter` method of `boardController` and pass in the selected string as the argument.
-     */
-    // START YOUR CODE HERE
-    // ...
-    // END YOUR CODE HERE
+                          UICollectionViewDelegateFlowLayout {
+
+
+
+  private let keyboardRows: [[String]] = [
+
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+
+    ["Z", "X", "C", "V", "B", "N", "M", DELETE_KEY]
+
+  ]
+
+  var didSelectString: ((String) -> Void)?
+
+
+
+  init(collectionView: UICollectionView) {
+
+    super.init()
+
+    collectionView.delegate = self
+
+    collectionView.dataSource = self
+
   }
+
+
+
+  func collectionView(_ collectionView: UICollectionView,
+
+                      numberOfItemsInSection section: Int) -> Int {
+
+    // Exercise 1: Return the correct number of items in a section
+
+    // Tip: There's a helper method you can use located in this class
+
+   
+
+      if section>=0 && section<keyboardRows.count{
+
+          return keyboardRows[section].count
+
+      }
+
+      else{
+
+          return 0}
+
+   
+
+  }
+
+
+
+  func collectionView(_ collectionView: UICollectionView,
+
+                      cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "KeyboardCell",
+
+                                                  for: indexPath) as! KeyboardCell
+
+    cell.configure(with: keyboardRows[indexPath.section][indexPath.row])
+
+    // Exercise 4: Pass in the `didSelectString` closure to the KeyboardCell's corresponding property
+
+    // START YOUR CODE HERE
+
+    // ...
+
+      cell.didSelectString = didSelectString
+
+    // END YOUR CODE HERE
+
+    return cell
+
+  }
+
+
+
+  // MARK: - Private Methods
+
+  func numItems(in row: Int) -> Int {
+
+    return keyboardRows[row].count
+
+  }
+
 }
+
+
