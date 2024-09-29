@@ -2,7 +2,7 @@
 
 Submitted by: Karma Yangchen Tenzin
 
-Wordle is an app that makes a user guess a word and gives hints along the way if the letters in the goal words.
+Wordle is an app that makes a user guess a word and gives hints along the way if the letters match the word.
 
 Time spent: 4.5 hours spent in total
 
